@@ -121,7 +121,7 @@ Order:
 
 - High Security Level (Double Front/back end Check, authorizations,SQL injection...)
 - Email verification in authentification
-- Reset Password opearion
+- Reset Password operaion
 - Send Notifications with Email (NodeMailer)
 - State management (REDUX)
 - Payment Gateway using (Stripe)
