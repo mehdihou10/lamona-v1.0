@@ -12,6 +12,10 @@ const swaggerDefinition = {
     {
       url: 'http://localhost:3000', 
     },
+    {
+      url: 'https://lamona-p1.vercel.app', 
+    },
+
   ],
 
   tags: [

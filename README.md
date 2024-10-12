@@ -26,7 +26,7 @@ no need to create more branched
 
 ```bash
 
-(warning: you need the ".env" file before doing the above steps('npm' commands),so if you are willing to run 
+(warning: you need the ".env" file before doing the down steps('npm' commands),so if you are willing to run 
  this application, please ask for the .env file privately)
 
 1/-
