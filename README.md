@@ -7,8 +7,6 @@ if it takes more than 30 seconds just refresh page.
 - While changing routes, it might takes so long due to Next js uses SSR, that's mean it builds
  the page content just when invoke it
 
-- API documentation can be opened in just "localhost:3000"
-
 - I used "Postegresql" for Database, it's hosted on Neon 
 
 - For testing, I did it manually with Next js test tools
@@ -44,6 +42,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## API DOCUMENTATION:
 http://localhost:3000/api/docs
+
+OR
+
+https://lamona-p1.vercel.app/api/docs
 
 
 ## FRONTEND:
