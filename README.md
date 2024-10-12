@@ -20,9 +20,14 @@ no need to create more branched
 - For the Payment gateway, you can use this credentials (for test):
 4242 4242 4242 4242, 07/28 ,787
 
+- if you are willing to run the web app localy, please DM to send you ".env" file
+
 ## Getting Started
 
 ```bash
+
+(warning: you need the ".env" file before doing the above steps('npm' commands),so if you are willing to run 
+ this application, please ask for the .env file privately)
 
 1/-
 npm install
