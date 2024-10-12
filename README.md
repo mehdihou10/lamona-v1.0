@@ -17,6 +17,9 @@ if it takes more than 30 seconds just refresh page.
 also Next js gives you the ability to do the Frontend & Backend in the same folder,so 
 no need to create more branched
 
+- For the Payment gateway, you can use this credentials (for test):
+4242 4242 4242 4242, 07/28 ,787
+
 ## Getting Started
 
 ```bash
