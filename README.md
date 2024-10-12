@@ -9,7 +9,13 @@ if it takes more than 30 seconds just refresh page.
 
 - API documentation can be opened in just "localhost:3000"
 
-- I used "Postegresql" for Database, it's hosted on Neon
+- I used "Postegresql" for Database, it's hosted on Neon 
+
+- For testing, I did it manually with Next js test tools
+
+- I pushed the code in the main branch because I was the code was clean and correct,
+also Next js gives you the ability to do the Frontend & Backend in the same folder,so 
+no need to create more branched
 
 ## Getting Started
 
@@ -19,7 +25,10 @@ if it takes more than 30 seconds just refresh page.
 npm install
 
 2/-
-npm run dev
+npm run build
+
+3/-
+npm run start
 
 ```
 
