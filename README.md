@@ -1,36 +1,120 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+#### NEXT JS FULL STACK E-commerce WEB APP #####
+
+## NOTICES:
+- When running NEXT js app, it might takes so long to fetch data due to incremental build,
+if it takes more than 30 seconds just refresh page.
+
+- While changing routes, it might takes so long due to Next js uses SSR, that's mean it builds
+ the page content just when invoke it
+
+- API documentation can be opened in just "localhost:3000"
+
+- I used "Postegresql" for Database, it's hosted on Neon
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+
+1/-
+npm install
+
+2/-
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## API DOCUMENTATION:
+http://localhost:3000/api/docs
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## FRONTEND:
 
-To learn more about Next.js, take a look at the following resources:
+Authentication:
+---------------
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Signup / Login
+- Verify User's Email Before Signing Up
+- Store User's crypted data in cookies
+- State management to change the status of user using: REDUX-TOOLKIT
+- Using Loader Component to wait the API Request Response
+- "Forgot Password" Feature to Change User's Password in Login Page
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Products:
+---------
 
-## Deploy on Vercel
+- Create a Parent Component ("Products"), then Show The Data Using the child "Product" Component
+- Show Product Data After Clicking on "More Details"
+- Create an Algorithme to show products depending on the orders numbers
+- Allow the "Signed" User to do the operation "Add To Cart"
+- For Security: If the route ("productId") is not a number, the Algorithme will return the user back to Home Page,To avoid SQL injection
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Cart:
+-----
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- For Security: The User must me "Signed" To see his cart, otherwise, The Algorithm will return the user back to Home Page
+- Show The Cart Products
+- Delete Cart Item
+- Show Cart Length on the Header
+- For SEO Using (REDUX): Inceament / Decreament In the Cart Will Update The Server, But it won't re-count again
+
+Order:
+------
+
+- Payment Gateway
+- Give the User the choice between paying online or paying hand by hand
+- send invoice in User's email after finishing order
+- give the user possibility to see all his orders including there dates (/orders)
+- the User must me "Signed", unless, he will be redirected to home page
+
+
+## BACKEND:
+
+Authentication:
+---------------
+
+- High Livel of Security: (SQL injections,hashing,encryption...)
+- Signup / Login
+- Send a Verification Email to user using: NODEMAILER
+- Encrypt User's Data to Store it in Cookie Using: CRYPTO-JS
+- Trigger The Inputs Where You Add Special Caracters exept password: (SQL injection security) Using: VALIDATOR
+- Send a Reset Password Link to User containing: Encapsulated User Data (Double Security Check) With JWT
+- Update User's Password
+
+Products:
+---------
+
+- Get Products Data From Database
+- Get Product Data with his Id ("ProductId")
+
+
+Cart:
+-----
+
+- CRUD operations on the "Cart"
+- Each operation needs the Authorization Using "user cookie"(encrypted Data)
+- Decryption of the cookie to get user's data needed in the operations
+
+
+Order:
+------
+
+- Handle Payment Gateway
+- Update User's Cart after finishing payment
+- send an Invoice to user in his email using NodeMailer
+- checking user's data before doing actions
+
+## ADVANCED FEATURES:
+
+- High Security Level (Double Front/back end Check, authorizations,SQL injection...)
+- Email verification in authentification
+- Reset Password opearion
+- Send Notifications with Email (NodeMailer)
+- State management (REDUX)
+- Payment Gateway using (Stripe)
+- Send invoices to users after finishing orders (in Email)
+- Save clients Orders
+- use encryption to save users' data safely in cookies
+
+

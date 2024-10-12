@@ -1,0 +1,13 @@
+export {default as Logo} from './Logo';
+export {default as Loader} from './Loader';
+export {default as PageLoading} from './PageLoading';
+export {default as Header} from './Header';
+export {default as ProviderComp} from './ProviderComp';
+export {default as DefaultSettings} from './DefaultSettings';
+export {default as PasswordRules} from './PasswordRules';
+export {default as ProfileImage} from './ProfileImage';
+export {default as Products} from './Products';
+export {default as Product} from './Product';
+export {default as Hero} from './Hero';
+export {default as PaymentPage} from './PaymentPage';
+export {default as CheckoutPage} from './CheckoutPage';

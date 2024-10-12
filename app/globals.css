@@ -1,27 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+html{
+    scroll-behavior: smooth
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* tailwind */
+@layer base{
+
+    body{
+        @apply bg-background
+    }
+
+    .btn{
+        @apply grid place-items-center w-[120px] h-[40px] text-[18px]
+    }
+
+    .checkout-label{
+        @apply block mb-[10px];
+    }
+
+    .checkout-input{
+        @apply block border-[#ccc] rounded-[4px] w-full
+    }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* custom css */
+.font-rubik{
+    font-family: "Rubik Dirt", system-ui;
+    font-weight: 400;
+    font-style: normal;
 }
