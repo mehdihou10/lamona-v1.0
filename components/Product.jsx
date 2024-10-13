@@ -1,8 +1,6 @@
 import Link from "next/link"
 
 const Product = ({product}) => {
-
-  console.log(product)
   return (
     <div className='bg-white rounded-[6px] overflow-hidden'>
 

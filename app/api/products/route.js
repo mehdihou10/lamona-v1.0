@@ -41,7 +41,12 @@ export const GET = async(req)=>{
 
         const products = await pool`SELECT * FROM product ORDER BY orders DESC`;
 
-        return NextResponse.json({status: httpStatus.SUCCESS, products});
+        const response = NextResponse.json({ status: 'success', products });
+
+        // Add the Cache-Control header to disable caching
+       response.headers.set('Cache-Control', 'no-store'); 
+
+       return response;
 
     } catch(err){
 
