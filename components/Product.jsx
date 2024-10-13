@@ -15,7 +15,7 @@ const Product = ({product}) => {
 
       <h1 className='text-center text-main text-[25px] font-bold my-[15px]'>${product.price}</h1>
 
-      <h3 className='font-semibold text-[18px]'>Stock: <span className='font-bold text-[20px]'>{product.stock}</span></h3>
+      {/* <h3 className='font-semibold text-[18px]'>Stock: <span className='font-bold text-[20px]'>{product.stock}</span></h3> */}
 
       <Link 
       href={`/products/${product.id}`}
