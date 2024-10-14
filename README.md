@@ -45,7 +45,7 @@ http://localhost:3000/api/docs
 
 OR
 
-https://lamona-p1.vercel.app/api/docs
+https://lamona.onrender.com/api/docs
 
 
 ## FRONTEND:
