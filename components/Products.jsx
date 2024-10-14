@@ -15,7 +15,10 @@ const Products = () => {
 
       try{
 
-        const res = await fetch("/api/products",{cache: "no-store"});
+        const res = await fetch("/api/products",{
+          method: "POST",
+          body: JSON.stringify({})
+        });
 
         const data = await res.json();
 
