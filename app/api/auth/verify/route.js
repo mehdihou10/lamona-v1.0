@@ -91,9 +91,19 @@ export const POST = async(req)=>{
         }
 
         const html = `
-        <p>Please Copy This Code:</p>
-        <h3 style='width: fit-content; padding: 10px 20px; background: #ccc'>${body.code}</h3>
-        `
+<html>
+  <body style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 20px;">
+    <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+      <h2 style="color: #4CAF50; text-align: center;">Email Verification</h2>
+      <p style="font-size: 16px;">Please copy the verification code below to complete your signup process:</p>
+      <h3 style="width: fit-content; padding: 10px 20px; background: #ccc; text-align: center;">${body.code}</h3>
+      <p style="font-size: 16px;">If you did not request this verification, please ignore this email.</p>
+      <p style="text-align: center; font-size: 12px; color: #777;">&copy; ${new Date().getFullYear()} Your Company. All rights reserved.</p>
+    </div>
+  </body>
+</html>
+`;
+
 
         sendEmail(html,body.email,"Email Verification");
 
