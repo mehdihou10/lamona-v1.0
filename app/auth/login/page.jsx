@@ -96,16 +96,44 @@ const Login = () => {
 
         const data = await res.json();
 
-        setPageLoader(false);
 
         if(data.status === httpStatus.SUCCESS){
 
-          Swal.fire({
-            icon: "success",
-            title: "We've sent you a reset link to your Email"
-          });
+          (
+            async function(){
+              
+              try{
+
+                const res = await fetch("/api/email",{
+                  body: JSON.stringify({email: userData.email, subject: "Reset Password", html: data.html})
+                })
+
+               setPageLoader(false);
+
+
+                if(res.ok){
+
+                  Swal.fire({
+                    icon: "success",
+                    title: "We've sent you a reset link to your Email"
+                  });
+
+                }
+
+              } catch(err){
+
+                setPageLoader(false);
+
+                console.log(err)
+              }
+            }
+          )()
+
+
 
         } else{
+
+          setPageLoader(false);
 
           toast.error(data.message);
         }

@@ -4,7 +4,7 @@ import { httpStatus } from "@/utils/https.status"
 import { verifyEmail } from "@/utils/input.validate";
 import { NextResponse } from "next/server";
 import jwt from 'jsonwebtoken';
-import { sendEmail } from "@/utils/send.email";
+
 
 /**
  * @swagger
@@ -80,9 +80,7 @@ export const POST = async(req)=>{
         <h3>(this link will expire in 5 minutes)</h3>
         `
 
-        sendEmail(html,email,"Password Reset");
-
-        return NextResponse.json({status: httpStatus.SUCCESS});
+        return NextResponse.json({status: httpStatus.SUCCESS, html});
 
     } catch(err){
 
