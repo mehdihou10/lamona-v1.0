@@ -1,7 +1,9 @@
-import nodemailer from 'nodemailer';
+import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 
-export const sendEmail = async (html, email, subject) => {
+export const POST = async (req) => {
   try {
+    const { email,html,subject } = await req.json();
 
     const transporter = nodemailer.createTransport({
       port: 465,
@@ -50,7 +52,9 @@ export const sendEmail = async (html, email, subject) => {
     // Log the response after the email is sent
     console.log("Email sent successfully:", info.response);
 
+    return NextResponse.json({ status: "success" });
   } catch (err) {
     console.log(err.message);
+    return NextResponse.json({ status: "error", message: err.message }, { status: 500 });
   }
 };

@@ -133,6 +133,62 @@ const Checkout = () => {
         total = cartData.reduce((acc,item)=> (item.price * item.qte) + acc, 10);
     }
 
+    let html = ""
+
+    if(cartData && userData && total !== 0){
+
+
+     html = `
+                   <html>
+                     <body style="font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 20px;">
+                       <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                         <h2 style="color: #4CAF50; text-align: center;">Thank You for Your Order!</h2>
+                         <p style="font-size: 16px;">Hello <strong>${userData.username}</strong>,</p>
+                         <p style="font-size: 16px;">We are pleased to confirm your order. Below are the details of your purchase:</p>
+                         
+                         <h3 style="color: #4CAF50;">Order Details:</h3>
+                         <table style="width: 100%; border-collapse: collapse;">
+                           <thead>
+                             <tr>
+                               <th style="border-bottom: 1px solid #dddddd; padding: 10px;">Item</th>
+                               <th style="border-bottom: 1px solid #dddddd; padding: 10px;">Quantity</th>
+                               <th style="border-bottom: 1px solid #dddddd; padding: 10px;">Price</th>
+                             </tr>
+                           </thead>
+                           <tbody>
+                             ${cartData.map(item => `
+                               <tr>
+                                 <td style="border-bottom: 1px solid #dddddd; padding: 10px;">${item.name}</td>
+                                 <td style="border-bottom: 1px solid #dddddd; padding: 10px; text-align: center;">${item.qte}</td>
+                                 <td style="border-bottom: 1px solid #dddddd; padding: 10px; text-align: right;">$${item.price}</td>
+                               </tr>
+                             `).join('')}
+                             <tr>
+                                 <td style="border-bottom: 1px solid #dddddd; padding: 10px;">Delivery</td>
+                                 <td style="border-bottom: 1px solid #dddddd; padding: 10px; text-align: center;">/</td>
+                                 <td style="border-bottom: 1px solid #dddddd; padding: 10px; text-align: right;">$10</td>
+                               </tr>
+                           </tbody>
+                         </table>
+                         
+                         <h3 style="color: #4CAF50; text-align: right;">Total Amount: $${total}</h3>
+                         
+                         <h3 style="color: #4CAF50;">Customer Information:</h3>
+                         <p>Email: <a href="mailto:${userData.email}">${userData.email}</a></p>
+                         <p>Phone: <a href="tel:${userData.phoneNumber}">${userData.phoneNumber}</a></p>
+                 
+                         <p style="font-size: 16px;">If you have any questions about your order, feel free to reach out to us.</p>
+                         <p style="font-size: 16px;">Thank you for shopping with us!</p>
+                         
+                         
+                         <p style="text-align: center; font-size: 12px; color: #777;">&copy; ${new Date().getFullYear()} Lamona. All rights reserved.</p>
+                       </div>
+                     </body>
+                   </html>
+                 `;
+
+    }
+
 
     //orders functions
     async function placeNoPaidOrder(){
@@ -148,13 +204,37 @@ const Checkout = () => {
 
             const data = await res.json();
 
-            setLoader1(false);
 
             if(data.status === httpStatus.SUCCESS){
+                
+                (
+                    async function(){
 
-                router.push("/success-page");
+                        try{
+
+                            const res = await fetch("/api/email",{
+                                method: "POST",
+                                body: JSON.stringify({email: userData.email, subject: "Order Invoice",html})
+                            })
+
+                            setLoader1(false);
+
+                            if(res.ok){
+
+                                router.push("/success-page");
+                            }
+
+                        } catch(err){
+
+                            setLoader1(false);
+                            console.log(err)
+                        }
+                    }
+                )()
 
             } else{
+
+                setLoader1(false);
 
                 const errors = data.message;
 
@@ -232,7 +312,7 @@ const Checkout = () => {
       {( cartData === null || userData.email === "") ? <PageLoading />
 
       :
-       ( showPaymentPage ? <PaymentPage total={total} cart={cartData} userData={userData} handleChange={setShowPayment} />
+       ( showPaymentPage ? <PaymentPage html={html} total={total} cart={cartData} userData={userData} handleChange={setShowPayment} />
 
         : <div>
         <Header />

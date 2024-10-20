@@ -12,7 +12,7 @@ import { httpStatus } from "@/utils/https.status";
 import Swal from "sweetalert2";
 
 
-const CheckoutPage = ({amount,cart,userData}) => {
+const CheckoutPage = ({html,amount,cart,userData}) => {
 
     
     const router = useRouter();
@@ -84,6 +84,22 @@ const CheckoutPage = ({amount,cart,userData}) => {
                         const data = await res.json();
 
                         if(data.status === httpStatus.SUCCESS){
+
+                          (
+                            async function(){
+
+                              try{
+
+                                const res = await fetch("/api/email",{
+                                  method: "POST",
+                                  body: JSON.stringify({email: userData.email, subject: "Order Invoice", html})
+                                })
+
+                              } catch(err){
+                                console.log(err);
+                              }
+                            }
+                          )()
 
                             router.push("/success-page");
 

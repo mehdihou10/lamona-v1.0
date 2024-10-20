@@ -9,7 +9,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
-const PaymentPage = ({total,cart,userData,handleChange}) => {
+const PaymentPage = ({html,total,cart,userData,handleChange}) => {
 
   return (
     <>
@@ -34,7 +34,7 @@ const PaymentPage = ({total,cart,userData,handleChange}) => {
             currency: "usd",
           }}
         >
-          <CheckoutPage amount={total} cart={cart} userData={userData}/>
+          <CheckoutPage amount={total} cart={cart} userData={userData} html={html}/>
         </Elements>
       </main>
     
