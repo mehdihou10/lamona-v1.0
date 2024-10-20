@@ -30,7 +30,7 @@ export const POST = async (req) => {
 
     const mailData = {
       from: {
-        name: "Mehdi Houari",
+        name: process.env.USER_NAME,
         address: process.env.USER_EMAIL
       },
       replyTo: email,
