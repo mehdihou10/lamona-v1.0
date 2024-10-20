@@ -105,6 +105,7 @@ const Login = () => {
               try{
 
                 const res = await fetch("/api/email",{
+                  method: "POST",
                   body: JSON.stringify({email: userData.email, subject: "Reset Password", html: data.html})
                 })
 
