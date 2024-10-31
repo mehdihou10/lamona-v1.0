@@ -10,10 +10,14 @@ import {
 import convertToSubcurrency from "@/utils/convertToSubcurrency";
 import { httpStatus } from "@/utils/https.status";
 import Swal from "sweetalert2";
+import { useDispatch } from "react-redux";
+import { changeCart } from "@/store/slices/cart";
+
 
 
 const CheckoutPage = ({html,amount,cart,userData}) => {
 
+  const dispatch = useDispatch();
     
     const router = useRouter();
 
@@ -101,6 +105,8 @@ const CheckoutPage = ({html,amount,cart,userData}) => {
                             }
                           )()
 
+                            window.localStorage.removeItem("lamona-cart");
+                            dispatch(changeCart(0));
                             router.push("/success-page");
 
                         } else{

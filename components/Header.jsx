@@ -7,14 +7,16 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { httpStatus } from '@/utils/https.status';
 import {useCookies} from 'react-cookie';
-import { FaChevronDown,FaChevronUp,FaBorderAll  } from "react-icons/fa";
+import { FaChevronDown,FaChevronUp,FaBorderAll,FaRegHeart  } from "react-icons/fa";
+import { HiBars3 } from "react-icons/hi2";
 import Swal from 'sweetalert2';
 import { useDispatch,useSelector } from 'react-redux';
 import { verifyAuth } from '@/store/slices/auth';
 import { changeCart } from '@/store/slices/cart';
+import { changeWishlist } from '@/store/slices/wishlist';
 import { useRouter } from 'next/navigation';
 import { LuLogOut } from "react-icons/lu";
-import { MdOutlineShoppingCart  } from "react-icons/md";
+import { MdClose, MdOutlineShoppingCart  } from "react-icons/md";
 
 
 
@@ -134,8 +136,6 @@ const Profile = ()=>{
             </div>}
           </div>
 
-          <Cart />
-
           </div>
         }
       </>
@@ -143,59 +143,77 @@ const Profile = ()=>{
 }
 
 
-const AuthButtons = ()=>(
+const AuthButtons = ()=>{
 
-    <div className="flex gap-[10px]">
+  const [toggle,setToggle] = useState(false);
+  
+  return(
+
+  <div>
+  
+    <div className="hidden md:flex gap-[10px]">
 
         <Link className='btn px-[10px] sm:px-0 w-fit sm:w-[120px]' href="/auth/login">Login</Link>
         <Link className='btn bg-main text-white px-[10px] sm:px-0 w-fit sm:w-[120px]' href="/auth/signup">Signup</Link>
 
     </div>
 
+    <div className="block md:hidden relative z-[5]">
+      {
+        toggle ? <MdClose onClick={()=>setToggle(false)} className='text-[30px] cursor-pointer' />
+
+        : <HiBars3 onClick={()=>setToggle(true)} className='text-[30px] cursor-pointer' />
+      }
+
+      { toggle &&
+
+        <ul className='absolute shadow-lg bg-[#eee] top-[120%] -left-[180px]'>
+
+        <li>
+          <Link href="/auth/signup" className='flex justify-center items-center gap-[5px] w-[200px] text-center px-[15px] py-[10px] border-b border-[#ccc]'>Signup</Link>
+        </li>
+
+        <li>
+          <Link href="/auth/login" className='flex justify-center items-center gap-[5px] w-[200px] text-center px-[15px] py-[10px]'>Login</Link>
+        </li>
+
+      </ul>
+      }
+
+    </div>
+
+    </div>
+
 )
+}
 
 
-const Cart = ()=>{
+const SavedData = ()=>{
 
   const dispatch = useDispatch();
 
   const cart = useSelector(state=>state.cart);
-
-  const [cookie,setCookie] = useCookies(['lamona-user']);
+  const wishlist = useSelector(state=>state.wishlist);
 
 
   useEffect(()=>{
     
-    (
-      async function(){
+    const cartLocalStorage = window.localStorage.getItem("lamona-cart");
+    const wishlistLocalStorage = window.localStorage.getItem("lamona-wishlist");
 
-        try{
+    if(cartLocalStorage) dispatch(changeCart(JSON.parse(cartLocalStorage).length));
 
-          const res = await fetch("/api/cart/count",{
-            headers:{
-              "ath": `Bearer ${cookie['lamona-user']}`
-            }
-          });
+    if(wishlistLocalStorage) dispatch(changeWishlist(JSON.parse(wishlistLocalStorage).length));
 
-          const data = await res.json();
-
-          if(data.status === httpStatus.SUCCESS){
-
-            dispatch(changeCart(data.count))
-          }
-
-        } catch(err){
-          console.log(err);
-        }
-      }
-    )()
 
   },[])
 
 
   return(
     
-    <Link href="/cart" className="relative">
+    <div className="flex items-center gap-[10px]">
+
+<Link href="/cart" className="relative">
       <MdOutlineShoppingCart className='text-[25px]' />
 
       <span className='absolute -top-[18px] -right-[3px] grid place-items-center
@@ -203,6 +221,16 @@ const Cart = ()=>{
         {cart}
         </span>
     </Link>
+
+    <Link href="/wishlist" className="relative">
+      <FaRegHeart className='text-[25px]' />
+
+      <span className='absolute -top-[18px] -right-[3px] grid place-items-center
+       w-[20px] h-[20px] rounded-full bg-red-500 text-white text-[12px]'>
+        {wishlist}
+        </span>
+    </Link>
+    </div>
   )
 }
 
@@ -214,6 +242,8 @@ const Header = () => {
   return (
     <div className='bg-white h-[90px] border-b flex justify-between items-center px-[20px]'>
       <Logo logoStyle="text-[25px] sm:text-[50px]" />
+
+      <SavedData />
 
 
       { isSigned === null ? <Loader />

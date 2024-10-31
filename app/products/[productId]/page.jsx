@@ -7,11 +7,14 @@ import { httpStatus } from '@/utils/https.status';
 import Link from 'next/link';
 import Swal from 'sweetalert2';
 import { MdOutlineZoomOutMap,MdOutlineShoppingCart,MdClose  } from "react-icons/md";
+import { FaRegHeart,FaHeart  } from "react-icons/fa";
 import {useCookies} from 'react-cookie';
 import { toast, ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from 'react-redux';
 import { increaseCart } from '@/store/slices/cart';
+import { increaseWishlist,decreaseWishlist } from '@/store/slices/wishlist';
+
 
 
 
@@ -33,6 +36,30 @@ const ProductDetails = ({params}) => {
     const [image,setImage] = useState(null);
 
     const [loader,setLoader] = useState(false);
+
+    const [changeWishlist,setChangeWishlist] = useState(false);
+
+    //variables
+    
+    useEffect(()=>{
+
+        let wishlistArr = [];
+
+        const wishlistLocalStorage = window.localStorage.getItem('lamona-wishlist');
+
+        if(wishlistLocalStorage){
+
+            wishlistArr = JSON.parse(wishlistLocalStorage);
+            
+            const productItem = wishlistArr.find(item=>+item === +productId);
+
+            if(productItem){
+
+                setChangeWishlist(true);
+            }
+        }
+
+    },[])
 
 
     useEffect(()=>{
@@ -90,9 +117,7 @@ const ProductDetails = ({params}) => {
         }
     }
 
-    async function addToCart(){
-
-        if(cookie['lamona-user']){
+     function addToCart(){
 
             if(product.stock === 0){
 
@@ -104,52 +129,78 @@ const ProductDetails = ({params}) => {
                 return;
             }
 
-            setLoader(true);
+            let cartArr = [];
 
-            try{
+            const cartLocalStorage = window.localStorage.getItem("lamona-cart");
 
-                const res = await fetch('/api/cart/add',{
-                    method: "POST",
-                    headers: {
-                        "ath": `Bearer ${cookie['lamona-user']}`
-                    },
-                    body: JSON.stringify({productId: product.id,qte: quantity})
-                });
+            if(cartLocalStorage){
 
-                const data = await res.json();
+                const cartItems = JSON.parse(cartLocalStorage);
 
-                setLoader(false);
+                const productItem = cartItems.find(item=> +item.id === +productId);
 
-                if(data.status === httpStatus.SUCCESS){
-
-                    dispatch(increaseCart())
+                if(productItem){
 
                     Swal.fire({
-                        icon: "success",
-                        title: "Product Added To Cart!"
+                        icon: "warning",
+                        title: "Product Already In Cart!"
                     })
 
-                } else{
-
-                    Swal.fire({
-                        icon: "error",
-                        title: data.message
-                    })
+                    return;
+                    
                 }
 
-            } catch(err){
-
-                setLoader(false);
-                toast.error(httpStatus.SERVER_ERROR_MESSAGE);
+                cartArr = cartItems;
             }
 
+            cartArr.push({
+                id: productId,
+                qte: quantity
+            })
+
+            window.localStorage.setItem("lamona-cart",JSON.stringify(cartArr)); 
+            dispatch(increaseCart())
+            
+            Swal.fire({
+                icon: "success",
+                title: "Product Added To Cart!"
+            })
+
+        
+    }
+    
+    function changeWishlistStatus(){
+
+        let wishlistArr = JSON.parse(window.localStorage.getItem('lamona-wishlist')) || [];
+
+        const productItem = wishlistArr.find(item=>+item === +productId);
+
+
+        if(productItem){
+
+            wishlistArr = wishlistArr.filter(item=>+item !== +productId);
+            dispatch(decreaseWishlist());
+
+            setChangeWishlist(false);
+            toast.success("Product Removed from Wishlist");
+
+
+        } else{
+
+            wishlistArr.push(productId);
+            dispatch(increaseWishlist());
+
+            setChangeWishlist(true);
+            toast.success("Product Added to Wishlist");
         }
+
+        window.localStorage.setItem("lamona-wishlist",JSON.stringify(wishlistArr));
     }
 
   return (
     <>
 
-    <ToastContainer theme='colored' position='tom-left' />
+    <ToastContainer position='top-left' theme='colored' />
 
     {
         image &&
@@ -199,6 +250,16 @@ const ProductDetails = ({params}) => {
 
         <div className="text flex-1 bg-white p-[20px] rounded-[6px]">
 
+            <div onClick={changeWishlistStatus} className="cursor-pointer text-[22px]">
+                {
+                    changeWishlist ?
+
+                    <FaHeart className='pointer-events-none' />
+
+                    : <FaRegHeart className='pointer-events-none' />
+                }
+            </div>
+
             <h1 className='text-[20px] font-semibold my-[20px]'>{product.name}</h1>
 
             <h3 className='text-gray-500 text-[18px]'>Stock: <span className='text-black font-bold text-[20px]'>{product.stock}</span></h3>
@@ -211,19 +272,33 @@ const ProductDetails = ({params}) => {
 
             <div className="flex gap-[10px] items-center justify-center mt-[20px]">
 
-                <button onClick={decreaseQte} className='grid place-items-center bg-[#eee] w-[40px] h-[40px] cursor-pointer border border-[#ccc]'>-</button>
+                <button
+                 onClick={decreaseQte}
+                  className={`${(quantity === 1 || +product.stock === 0) ? 'bg-[#00000063] pointer-events-none' : 'bg-[#eee] cursor-pointer'}
+                    grid place-items-center w-[40px] h-[40px]
+                    border border-[#ccc] select-none`}
+                   >
+                    -
+                  </button>
 
                 <span className='block w-[150px] max-w-full text-center border border-[#ccc] bg-[#eee] outline-none py-[5px]' >
                     {quantity}
                  </span>   
 
-                <button onClick={increaseQte} className='grid place-items-center bg-[#eee] w-[40px] h-[40px] cursor-pointer border border-[#ccc]'>+</button>
+                <button
+                 onClick={increaseQte}
+                 className={`${(quantity === product.stock || +product.stock === 0) ? 'bg-[#00000063] pointer-events-none' : 'bg-[#eee] cursor-pointer'} 
+                 grid place-items-center w-[40px] h-[40px]
+                 border border-[#ccc] select-none`}
+                  >
+                    +
+                </button>
 
             </div>
 
             <button
             onClick={addToCart}
-            className={`${!cookie['lamona-user'] ? 'opacity-50 cursor-not-allowed' : ''} 
+            className={`
              ${loader ? 'pointer-events-none' : ''}
                 flex justify-center items-center gap-[5px] 
             mt-[20px] w-[250px] max-w-full mx-auto h-[40px]

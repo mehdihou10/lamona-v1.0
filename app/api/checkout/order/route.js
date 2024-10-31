@@ -93,17 +93,13 @@ export const POST = async(req)=>{
 
         for(const item of cart){
 
-            items.push(`${item.qte} x ${item.name}`);
-
-            console.log(item.id_product);
+            items.push(`${item.quantity} x ${item.name}`);
 
             await pool`UPDATE product 
-                       SET stock=stock - ${item.qte},
+                       SET stock=stock - ${item.quantity},
                            orders = orders + 1
-                       WHERE id=${item.id_product}`;           
+                       WHERE id=${item.id}`;           
         }
-
-        await pool`DELETE FROM cart WHERE id_user=${userData.id}`;
 
         const currentTime = new Date();
 

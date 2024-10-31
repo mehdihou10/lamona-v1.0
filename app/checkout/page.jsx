@@ -9,12 +9,16 @@ import { useCookies } from 'react-cookie';
 import { httpStatus } from '@/utils/https.status';
 import Swal from 'sweetalert2';
 import { ToastContainer,toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from 'react-redux';
+import { changeCart } from '@/store/slices/cart';
+
 
 
 const Item = ({item})=>(
 
     <div className="item border-b py-[15px] flex items-center gap-[10px] text-gray-500">
-                    <span className='text-black text-[22px] font-bold'>{item.qte}</span>
+                    <span className='text-black text-[22px] font-bold'>{item.quantity}</span>
                      <span className='text-[20px]'>x</span>
                     <span className='text-[20px]'>{item.name}</span>
     </div>
@@ -22,6 +26,8 @@ const Item = ({item})=>(
 )
 
 const Checkout = () => {
+
+    const dispatch = useDispatch();
 
     const router = useRouter();
 
@@ -48,24 +54,39 @@ const Checkout = () => {
             return router.push("/");
         }
 
+        const cartLocalStorage = window.localStorage.getItem('lamona-cart');
+
+        if(!cartLocalStorage){
+
+            return router.push("/");
+        }
+
+        const cartItems = JSON.parse(cartLocalStorage);
+
+        if(cartItems.length === 0){
+
+            router.push("/");
+        }
+
         (
             async function(){
                 
                 try{
 
                     const res = await fetch("/api/cart",{
-                        headers: {
-                            "ath": `Bearer ${cookie['lamona-user']}`
-                        }
+                        method: "POST",
+                        body: JSON.stringify({cart: cartItems})
                     });
 
                     const data = await res.json();
 
                     if(data.status === httpStatus.SUCCESS){
 
-                        if(data.cart.length > 0){
+                        const validProducts = data.validProducts;
 
-                        setCartData(data.cart);
+                        if(validProducts.length > 0){
+
+                            setCartData(validProducts);
 
                         } else{
 
@@ -130,7 +151,7 @@ const Checkout = () => {
 
     if(cartData){
 
-        total = cartData.reduce((acc,item)=> (item.price * item.qte) + acc, 10);
+        total = cartData.reduce((acc,item)=> (item.price * item.quantity) + acc, 10);
     }
 
     let html = ""
@@ -159,7 +180,7 @@ const Checkout = () => {
                              ${cartData.map(item => `
                                <tr>
                                  <td style="border-bottom: 1px solid #dddddd; padding: 10px;">${item.name}</td>
-                                 <td style="border-bottom: 1px solid #dddddd; padding: 10px; text-align: center;">${item.qte}</td>
+                                 <td style="border-bottom: 1px solid #dddddd; padding: 10px; text-align: center;">${item.quantity}</td>
                                  <td style="border-bottom: 1px solid #dddddd; padding: 10px; text-align: right;">$${item.price}</td>
                                </tr>
                              `).join('')}
@@ -221,6 +242,8 @@ const Checkout = () => {
 
                             if(res.ok){
 
+                                window.localStorage.removeItem('lamona-cart');
+                                dispatch(changeCart(0));
                                 router.push("/success-page");
                             }
 
