@@ -163,10 +163,7 @@ function verifyProductData(body){
 
         errors.push("Please Add Product Name")
 
-    } else if(!validator.isAlphanumeric(name)){
-
-        errors.push("Name must be just Letters & Numbers")
-    }
+    } 
 
     //image
     if(validator.isEmpty(image)){
