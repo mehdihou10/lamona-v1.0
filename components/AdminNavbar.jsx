@@ -41,6 +41,8 @@ const AdminNavbar = () => {
 
     useEffect(()=>{
 
+        if(typeof window !== "undefined"){
+
         const pathname = window.location.pathname
 
         const currentPathname = pathname.slice(pathname.lastIndexOf("/") + 1);
@@ -54,6 +56,8 @@ const AdminNavbar = () => {
             changeActive(2);
 
         }
+
+    }
 
     },[])
 
