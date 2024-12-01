@@ -60,6 +60,7 @@ export const POST = async(req)=>{
 
         const user = await pool`SELECT * FROM "user" WHERE email=${email}`;
 
+
         if(user.length === 0){
 
             return NextResponse.json({status: httpStatus.FAIL, message: "User Not Found"});
@@ -74,12 +75,13 @@ export const POST = async(req)=>{
 
         const cryptedData = encryptData({
             id: user[0].id,
+            type: user[0].type,
             username: user[0].username,
             email: user[0].email,
             phoneNumber: user[0].phone_number
         });
 
-        return NextResponse.json({status: httpStatus.SUCCESS, data: cryptedData});
+        return NextResponse.json({status: httpStatus.SUCCESS, data: cryptedData, type: user[0].type});
 
     } catch(err){
 

@@ -13,6 +13,7 @@ import {useCookies} from 'react-cookie';
 import { useRouter } from "next/navigation";
 import { expirationDate } from "@/utils/cookie.expiration";
 import Swal from "sweetalert2";
+import { userTypes } from "@/utils/user.types";
 
 
 
@@ -57,7 +58,15 @@ const Login = () => {
 
           setCookie("lamona-user",data.data,{path: "/",expires: expirationDate});
           dispatch(verifyAuth());
-          router.push('/');
+
+          if(data.type === userTypes.USER){
+
+            router.push('/');
+
+          } else if(data.type === userTypes.ADMIN){
+
+            router.push("/admin");
+          }
 
         } else{
 

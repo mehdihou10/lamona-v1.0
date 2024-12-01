@@ -2,6 +2,7 @@ import pool from "@/db/connection";
 import { encryptData } from "@/utils/crypt";
 import { httpStatus } from "@/utils/https.status"
 import { verifyUserSignup } from "@/utils/input.validate";
+import { userTypes } from "@/utils/user.types";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server"
 
@@ -109,19 +110,20 @@ export const POST = async(req)=>{
         const hashedPassword = await bcrypt.hash(body.password,10);
 
 
-        await pool` INSERT INTO "user" (username,email,password,phone_number)
-                    VALUES(${body.username},${body.email},${hashedPassword},${body.phoneNumber})`;
+        await pool` INSERT INTO "user" (username,email,password,phone_number,type)
+                    VALUES(${body.username},${body.email},${hashedPassword},${body.phoneNumber},${userTypes.USER})`;
 
         const newUser = await pool`SELECT id,username,email,phone_number FROM "user" WHERE email=${body.email}`;            
 
         const cryptedData = encryptData({
             id: newUser[0].id,
+            type: userTypes.USER,
             username: newUser[0].username,
             email: newUser[0].email,
             phoneNumber: newUser[0].phone_number
         });
         
-        return NextResponse.json({status: httpStatus.SUCCESS, data: cryptedData});
+        return NextResponse.json({status: httpStatus.SUCCESS, data: cryptedData, type: userTypes.USER});
 
 
     } catch(err){

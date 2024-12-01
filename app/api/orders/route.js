@@ -63,7 +63,7 @@ export const GET = async(req)=>{
 
         const user = decryptData(token);
 
-        const orders = await pool`SELECT * FROM "order" WHERE id_user=${user.id}`;
+        const orders = await pool`SELECT * FROM "order" WHERE id_user=${user.id} ORDER BY date DESC`;
 
         return NextResponse.json({status: httpStatus.SUCCESS,orders});
 

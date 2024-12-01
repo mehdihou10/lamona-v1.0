@@ -27,6 +27,24 @@ html{
     .checkout-input{
         @apply block border-[#ccc] rounded-[4px] w-full
     }
+
+    /* Pagination styling */
+    .pagination{
+
+        @apply flex flex-wrap items-center justify-center gap-[15px] my-[20px]
+    }
+    .pagination-item{
+        @apply w-[30px] h-[30px] grid place-items-center
+    }
+    .pagination-active{
+        @apply bg-main text-white font-semibold
+    }
+
+    /* End Pagination */
+
+    .dashboard-icon{
+        @apply text-white w-[40px] h-[40px] grid place-items-center rounded-[5px]
+    }
 }
 
 
@@ -38,4 +56,10 @@ html{
 }
 .hero-sub{
     line-height: 1.3 !important;
+}
+.pagination svg{
+    width: 30px !important;
+}
+.dashboard-icon{
+    background: linear-gradient(90deg,#0d53bb,rgba(15,10,153,.984));
 }

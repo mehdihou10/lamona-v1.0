@@ -11,3 +11,6 @@ export {default as Product} from './Product';
 export {default as Hero} from './Hero';
 export {default as PaymentPage} from './PaymentPage';
 export {default as CheckoutPage} from './CheckoutPage';
+export {default as AdminNavbar} from './AdminNavbar';
+export {default as AdminSettings} from './AdminSettings';
+export {default as ProductForm} from './ProductForm';

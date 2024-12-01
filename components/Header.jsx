@@ -17,6 +17,7 @@ import { changeWishlist } from '@/store/slices/wishlist';
 import { useRouter } from 'next/navigation';
 import { LuLogOut } from "react-icons/lu";
 import { MdClose, MdOutlineShoppingCart  } from "react-icons/md";
+import { userTypes } from '@/utils/user.types';
 
 
 
@@ -49,7 +50,15 @@ const Profile = ()=>{
 
           const data = await res.json();
 
-          setUserData(data.user)
+
+          if(data.user.type === userTypes.USER){
+
+            setUserData(data.user)
+
+          } else if(data.user.type === userTypes.ADMIN){
+
+            router.push("/admin");
+          }
 
         } catch(err){
           toast.error(httpStatus.SERVER_ERROR_MESSAGE);
