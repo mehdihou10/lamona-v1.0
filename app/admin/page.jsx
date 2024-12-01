@@ -3,11 +3,11 @@
 import {useState,useEffect} from 'react';
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from 'next/navigation';
-import { PageLoading } from '@/components';
 import { MdPeople,MdOutlineProductionQuantityLimits } from "react-icons/md";
 import { FaBorderAll } from "react-icons/fa";
 import { ThreeDots } from 'react-loader-spinner';
-import Chart from "react-apexcharts";
+import dynamic from "next/dynamic";
+const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 
 const Stat = ({title,icon,data})=>(
@@ -24,7 +24,7 @@ const Stat = ({title,icon,data})=>(
   </div>
 )
 
-const Admin = () => {
+const AdminDashboard = () => {
 
   const router = useRouter();
 
@@ -123,7 +123,6 @@ const Admin = () => {
 
             const statsData = data.data;
 
-            console.log(statsData)
             setStats(statsData);
 
           } else{
@@ -200,4 +199,4 @@ const Admin = () => {
   )
 }
 
-export default Admin
+export default AdminDashboard

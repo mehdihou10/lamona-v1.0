@@ -39,27 +39,25 @@ const AdminNavbar = () => {
         active2: false,
     })
 
-    // useEffect(()=>{
+    useEffect(()=>{
 
-    //     if(typeof window !== "undefined"){
+        const pathname = window.location.pathname
 
-    //     const pathname = window.location.pathname
+        const currentPathname = pathname.slice(pathname.lastIndexOf("/") + 1);
 
-    //     const currentPathname = pathname.slice(pathname.lastIndexOf("/") + 1);
+        if(currentPathname === "admin" || currentPathname === ""){
 
-    //     if(currentPathname === "admin" || currentPathname === ""){
+            changeActive(1);
 
-    //         changeActive(1);
+        } else if(currentPathname === "products"){
 
-    //     } else if(currentPathname === "products"){
+            changeActive(2);
 
-    //         changeActive(2);
+        }
 
-    //     }
 
-    // }
 
-    // },[])
+    },[])
 
     useEffect(()=>{
 
